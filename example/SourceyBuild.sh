@@ -4,6 +4,17 @@
 # if you want to force sourcey to rebuild everything
 #SOURCEY_REBUILD=1
 
+echo "=tree WORKD_DIR"
+tree $WORK_DIR
+echo "=tree STAGE_DIR"
+tree $STAGE_DIR
+echo "=tree CACHE_DIR"
+tree $CACHE_DIR
+echo "=tree ENV_DIR"
+tree $ENV_DIR
+echo "=tree PREFIX"
+tree $PREFIX
+
 # create a copy of perl
 buildPerl 5.20.2
 

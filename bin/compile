@@ -11,9 +11,10 @@ set -o errtrace
 
 ## show the environment we are building in
 SOURCEY=sourcey
-BUILD_DIR=$1
+BUILD_DIR=${1:-}
 STAGE_DIR=$(dirname $BUILD_DIR)
-CACHE_DIR=$2
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
 PREFIX=$HOME/$SOURCEY
 START_DIR=`pwd`
 BUILDPACK_DIR=$(dirname `dirname $0`)
@@ -41,6 +42,7 @@ if [ -f $SB ]; then
       echo "       -  STAGE_DIR=$STAGE_DIR"
       echo "       -  PREFIX=$PREFIX"
       echo "       -  CACHE_DIR=$CACHE_DIR"
+      echo "       -  ENV_DIR=$ENV_DIR"
        
       source $SB
       if [ -d $PREFIX ]; then
