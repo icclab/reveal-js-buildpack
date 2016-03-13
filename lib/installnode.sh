@@ -17,7 +17,7 @@ install_node_modules() {
 
   echo "$build_dir"
   ls $build_dir/
-  
+
   if [ -e $build_dir/package.json ]; then
     cd $build_dir
 
@@ -133,8 +133,9 @@ install_node() {
   local build_dir=${1:-}
   local install_dir=${2:-$build_dir/vendor/node}
 
+  
   mkdir -p $install_dir
-
+  
   ## Failures that should be caught immediately
   fail_invalid_package_json "$build_dir"
   warn_prebuilt_modules "$build_dir"
@@ -148,5 +149,8 @@ install_node() {
 
   warn_node_engine "$node_version"
   install_nodejs "$node_version" "$install_dir"
+
+  export NODE_HOME="$install_dir/vendor/node"
+  export PATH="$NODE_HOME/bin:$PATH:$build_dir/node_modules/.bin"
 }
 
