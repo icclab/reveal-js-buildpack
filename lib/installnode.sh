@@ -17,7 +17,7 @@ install_node_modules() {
 
   echo "$build_dir"
   ls $build_dir/
-
+  echo "PATH: $PATH"
   if [ -e $build_dir/package.json ]; then
     cd $build_dir
 
