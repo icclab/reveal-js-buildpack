@@ -48,7 +48,7 @@ echo "  -  NODE_DIR=$NODE_DIR"
 
 # save content
 header "Backup content"
-cp -Rfv "$BUILD_DIR/*" "$BACKUP_DIR/"
+cp -avr "$BUILD_DIR/" "$BACKUP_DIR"
 
 clone_revealjs() {
   if [ "$REVEALJS_REPO" != "" ]; then
@@ -64,7 +64,7 @@ header "Clone reveal.js repository"
 clone_revealjs | output "$LOG_FILE"
 
 header "Restore content on top of reveal.js content"
-cp -Rfv "$BACKUP_DIR/*" "$BUILD_DIR/"
+cp -avr "$BACKUP_DIR/" "$BUILD_DIR"
 
 header "Installing Node"
 install_node "$BUILD_DIR" "$NODE_DIR" | output "$LOG_FILE"
