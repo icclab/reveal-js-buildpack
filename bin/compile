@@ -10,59 +10,72 @@ set +o hashall
 set -o errtrace
 
 ## show the environment we are building in
-SOURCEY=sourcey
 BUILD_DIR=${1:-}
 STAGE_DIR=$(dirname $BUILD_DIR)
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
-PREFIX=$HOME/$SOURCEY
-START_DIR=`pwd`
+#PREFIX=$HOME/$SOURCEY
+#START_DIR=`pwd`
 BUILDPACK_DIR=$(dirname `dirname $0`)
+LOG_FILE="$STAGE_DIR/build-log.txt"
 
-WORK_DIR=/tmp/$SOURCEY.$$
-mkdir -p $WORK_DIR
+BACKUP_DIR="$STAGE_DIR/content"
+NODE_DIR="$BUILD_DIR/vendor/node"
 
-source $BUILDPACK_DIR/lib/SourceyBuildLib.inc
+REVEALJS_REPO=${REVEALJS_REPO:-https://github.com/christofmarti/reveal.js}
 
-mkdir -p $BUILD_DIR $CACHE_DIR
+# create log file
+echo "" > "$LOG_FILE"
 
-SB=$BUILD_DIR/SourceyBuild.sh
+### load modules
+source $BUILDPACK_DIR/lib/common.sh
+source $BUILDPACK_DIR/lib/installnode.sh
+source $BUILDPACK_DIR/lib/cache.sh
 
-if [ -f $SB ]; then
-   # to force a full recompile, increment the Rx part of the md5sum
-   # only do this if you change something fundamental in the compile
-   # system
-   MD5SUM=`md5sum $SB|awk '{print $1}'`.R2
-   if egrep -qv '^SOURCEY_REBUILD=1' $SB && test -f "$CACHE_DIR/$SOURCEY/$MD5SUM"; then
-      cp --verbose --archive $CACHE_DIR/$SOURCEY $STAGE_DIR |& progressor "Restoring binaries from $CACHE_DIR"
-   else
-      cd $WORK_DIR
-      echo "       Environment"
-      echo "       -  WORK_DIR=$WORK_DIR"
-      echo "       -  STAGE_DIR=$STAGE_DIR"
-      echo "       -  PREFIX=$PREFIX"
-      echo "       -  CACHE_DIR=$CACHE_DIR"
-      echo "       -  ENV_DIR=$ENV_DIR"
-       
-      source $SB
-      if [ -d $PREFIX ]; then
-          mv --verbose $PREFIX $STAGE_DIR |& progressor "Moving binaries to $STAGE_DIR ready for uploading" 1
-          if [ -d $CACHE_DIR/$SOURCEY ]; then
-              chmod -R u+rwx $CACHE_DIR/$SOURCEY
-              rm -rf $CACHE_DIR/$SOURCEY
-          fi
-          cp --verbose --archive $STAGE_DIR/$SOURCEY $CACHE_DIR  |& progressor "Saveing a copy of your binaries to $CACHE_DIR for future use"
-          touch $CACHE_DIR/$SOURCEY/$MD5SUM
-      fi
-   fi
-fi
+# create required folders
+mkdir -p $BUILD_DIR $CACHE_DIR $BACKUP_DIR
 
-if [ -r $BUILD_DIR/SourceyBuildApp.sh ]; then
-   cd $WORK_DIR
-   source $BUILD_DIR/SourceyBuildApp.sh
-fi
+cd $BUILD_DIR
+# show environment
+header "Environment"
+echo "  -  BUILD_DIR=$BUILD_DIR"
+echo "  -  STAGE_DIR=$STAGE_DIR"
+echo "  -  CACHE_DIR=$CACHE_DIR"
+echo "  -  ENV_DIR=$ENV_DIR"
+echo "  -  BUILDPACK_DIR=$BUILDPACK_DIR"
+echo "  -  BACKUP_DIR=$BACKUP_DIR"
+echo "  -  NODE_DIR=$NODE_DIR"
 
-chmod 755 $BUILD_DIR/SourceyStart.sh
+# save content
+header "Backup content"
+cp -a "$BUILD_DIR/" "$BACKUP_DIR/"
 
-cd $HOME
-rm -rf $WORK_DIR
+clone_revealjs() {
+  if [ "$REVEALJS_REPO" != "" ]; then
+    echo "Clone reveal.js repository: $REVEALJS_REPO"
+    git clone --quiet $REVEALJS_REPO $BUILD_DIR
+  else
+    error "No Revealjs repo declared"
+    exit 1
+  fi
+}
+header "Clone reveal.js repository"
+clone_revealjs | output "$LOG_FILE"
+
+header "Restore content on top of reveal.js content"
+cp -a "$BACKUP_DIR/" "$BUILD_DIR/"
+
+header "Installing Node"
+install_node "$BUILD_DIR" "$NODE_DIR" | output "$LOG_FILE"
+
+header "Building dependencies"
+build_dependencies | output "$LOG_FILE"
+
+summarize_build() {
+  cd $BUILD_DIR
+  (npm ls --depth=0 | tail -n +2 || true) 2>/dev/null
+}
+
+header "Build succeeded!"
+summarize_build | output "$LOG_FILE"
+

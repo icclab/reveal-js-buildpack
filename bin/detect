@@ -1,11 +1,11 @@
 #!/bin/sh
 BUILD_DIR=$1
 
-# figure out if we are looking at a Sourcy compatible app
-# only the SourcyStart.sh is mandatory.
-
-if [ -f "$BUILD_DIR/SourceyStart.sh" ]; then
-    echo "Yey we are Sourcey!"
+# figure out if we are looking at a reveal.js compatible app
+# only the index.html.
+BUILDPACK_DIR=$(dirname $(dirname $0))
+if [ -f "$BUILD_DIR/index.html" ]; then
+    echo "reveal.js `cat $BUILDPACK_DIR/VERSION`"
     exit 0
 fi
 
