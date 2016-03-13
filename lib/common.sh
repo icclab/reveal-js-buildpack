@@ -42,7 +42,7 @@ os=$(get_os)
 cpu=$(get_cpu)
 
 # JSON tooling
-export JQ="$BP_DIR/vendor/jq-$os"
+export JQ="$BUILDPACK_DIR/vendor/jq-$os"
 
 read_json() {
   local file=$1
