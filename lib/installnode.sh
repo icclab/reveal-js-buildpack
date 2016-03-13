@@ -50,7 +50,7 @@ rebuild_node_modules() {
 
 build_dependencies() {
   local build_dir=${1:-}
-  
+
   ## check if prebuild modules are available
   [ -e "$build_dir/node_modules" ] && PREBUILD=true || PREBUILD=false
 
@@ -68,6 +68,8 @@ fail_invalid_package_json() {
     return 1
   fi
 }
+
+warnings=$(mktemp -t revealjs-buildpack-XXXX)
 
 warning() {
   local tip=${1:-}

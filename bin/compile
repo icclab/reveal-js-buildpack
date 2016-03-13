@@ -63,7 +63,7 @@ header "Clone reveal.js repository"
 clone_revealjs | output "$LOG_FILE"
 
 header "Restore content on top of reveal.js content"
-cp -a "$BACKUP_DIR/" "$BUILD_DIR/"
+cp -Rfv "$BACKUP_DIR/" "$BUILD_DIR/"
 
 header "Installing Node"
 install_node "$BUILD_DIR" "$NODE_DIR" | output "$LOG_FILE"
