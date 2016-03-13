@@ -7,7 +7,7 @@
 #echo "Node version: `node --version`"
 #echo "OS: $os"
 #echo "CPU: $cpu"
-echo "Environment"
+echo "Environment "
 env
 echo "----------------------------------------"
 echo "=tree WORKD_DIR"
