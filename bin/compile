@@ -49,6 +49,7 @@ echo "  -  NODE_DIR=$NODE_DIR"
 # save content
 header "Backup content"
 cp -a "$BUILD_DIR/" "$BACKUP_DIR/"
+rm -rf "$BUILD_DIR/"
 
 clone_revealjs() {
   if [ "$REVEALJS_REPO" != "" ]; then
