@@ -5,8 +5,8 @@
 #SOURCEY_REBUILD=1
 
 #echo "Node version: `node --version`"
-echo "OS: $os"
-echo "CPU: $cpu"
+#echo "OS: $os"
+#echo "CPU: $cpu"
 echo "Environment"
 env
 echo "----------------------------------------"
