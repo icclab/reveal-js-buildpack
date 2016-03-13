@@ -38,6 +38,7 @@ if [ -f $SB ]; then
    else
       cd $WORK_DIR
       echo "       Environment"
+      echo "       -  BUILD_DIR=$BUILD_DIR"
       echo "       -  WORK_DIR=$WORK_DIR"
       echo "       -  STAGE_DIR=$STAGE_DIR"
       echo "       -  PREFIX=$PREFIX"
