@@ -30,7 +30,7 @@ echo "" > "$LOG_FILE"
 ### load modules
 source $BUILDPACK_DIR/lib/common.sh
 source $BUILDPACK_DIR/lib/installnode.sh
-source $BUILDPACK_DIR/lib/cache.sh
+#source $BUILDPACK_DIR/lib/cache.sh
 
 # create required folders
 mkdir -p $BUILD_DIR $CACHE_DIR $BACKUP_DIR
