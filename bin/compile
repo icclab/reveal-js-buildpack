@@ -49,12 +49,12 @@ echo "  -  NODE_DIR=$NODE_DIR"
 # save content
 header "Backup content"
 cp -a "$BUILD_DIR/" "$BACKUP_DIR/"
-rm -rf "$BUILD_DIR/"
 
 clone_revealjs() {
   if [ "$REVEALJS_REPO" != "" ]; then
     echo "Clone reveal.js repository: $REVEALJS_REPO"
-    git clone --quiet $REVEALJS_REPO $BUILD_DIR
+    git clone --quiet $REVEALJS_REPO $BUILD_DIR/revealjs
+    mv $BUILD_DIR/revealjs/* $BUILD_DIR/
   else
     error "No Revealjs repo declared"
     exit 1

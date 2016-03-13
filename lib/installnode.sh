@@ -7,9 +7,9 @@ install_nodejs() {
   curl $download_url --silent --fail --retry 5 --retry-max-time 15 -o /tmp/node.tar.gz 
   echo "Downloaded [$download_url]"
   tar xzf /tmp/node.tar.gz -C /tmp
-  rm -rf $dir/*
-  mv /tmp/node-v$version-$os-$cpu/* $dir
-  chmod +x $dir/bin/*
+  rm -rf $install_dir/*
+  mv /tmp/node-v$version-$os-$cpu/* $install_dir
+  chmod +x $install_dir/bin/*
 }
 
 install_node_modules() {
