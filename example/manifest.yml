@@ -1,0 +1,7 @@
+---
+applications:
+- name: revealjs-example
+  memory: 128M
+  instances: 1
+  host: revealjs-${random-word}
+  buildpack: https://github.engineering.zhaw.ch/mach/reveal-js-buildpack.git
