@@ -67,6 +67,8 @@ header "Restore content on top of reveal.js content"
 cp -rv "$BACKUP_DIR"/. "$BUILD_DIR/"
 ls -l "$BUILD_DIR"
 
+cp "$BUILDPACK_DIR/bin/boot.sh" "$BUILD_DIR/"
+
 header "Installing Node"
 install_node "$BUILD_DIR" "$NODE_HOME" | output "$LOG_FILE"
 
