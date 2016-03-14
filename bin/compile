@@ -18,11 +18,11 @@ ENV_DIR=${3:-}
 #START_DIR=`pwd`
 BUILDPACK_DIR=$(dirname `dirname $0`)
 LOG_FILE="$STAGE_DIR/build-log.txt"
-
-BACKUP_DIR="$STAGE_DIR/content"
-NODE_DIR="$BUILD_DIR/vendor/node"
-
 REVEALJS_REPO=${REVEALJS_REPO:-https://github.com/christofmarti/reveal.js}
+BACKUP_DIR="$STAGE_DIR/content"
+
+export NODE_HOME="$BUILD_DIR/vendor/node"
+export PATH="$NODE_HOME/bin:$PATH:$BUILD_DIR/node_modules/.bin"
 
 # create log file
 echo "" > "$LOG_FILE"
@@ -44,7 +44,7 @@ echo "  -  CACHE_DIR=$CACHE_DIR"
 echo "  -  ENV_DIR=$ENV_DIR"
 echo "  -  BUILDPACK_DIR=$BUILDPACK_DIR"
 echo "  -  BACKUP_DIR=$BACKUP_DIR"
-echo "  -  NODE_DIR=$NODE_DIR"
+echo "  -  NODE_HOME=$NODE_HOME"
 
 # save content
 header "Backup content"
@@ -68,7 +68,7 @@ cp -rv "$BACKUP_DIR"/. "$BUILD_DIR/"
 ls -l "$BUILD_DIR"
 
 header "Installing Node"
-install_node "$BUILD_DIR" "$NODE_DIR" | output "$LOG_FILE"
+install_node "$BUILD_DIR" "$NODE_HOME" | output "$LOG_FILE"
 
 header "Building dependencies"
 build_dependencies "$BUILD_DIR" | output "$LOG_FILE"

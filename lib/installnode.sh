@@ -150,7 +150,6 @@ install_node() {
   warn_node_engine "$node_version"
   install_nodejs "$node_version" "$install_dir"
 
-  export NODE_HOME="$install_dir/vendor/node"
-  export PATH="$NODE_HOME/bin:$PATH:$build_dir/node_modules/.bin"
+
 }
 
