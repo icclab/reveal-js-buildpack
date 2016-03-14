@@ -53,8 +53,9 @@ cp -rv "$BUILD_DIR"/. "$BACKUP_DIR/"
 clone_revealjs() {
   if [ "$REVEALJS_REPO" != "" ]; then
     echo "Clone reveal.js repository: $REVEALJS_REPO"
-    git clone --quiet $REVEALJS_REPO $BUILD_DIR/revealjs
-    mv $BUILD_DIR/revealjs/* $BUILD_DIR/
+    git clone --quiet $REVEALJS_REPO $STAGE_DIR/revealjs
+    mv $STAGE_DIR/revealjs/* $BUILD_DIR/
+    rm -rf $STAGE_DIR/revealjs
   else
     error "No Revealjs repo declared"
     exit 1
@@ -65,7 +66,6 @@ clone_revealjs | output "$LOG_FILE"
 
 header "Restore content on top of reveal.js content"
 cp -rv "$BACKUP_DIR"/. "$BUILD_DIR/"
-ls -l "$BUILD_DIR"
 
 cp "$BUILDPACK_DIR/bin/boot.sh" "$BUILD_DIR/"
 

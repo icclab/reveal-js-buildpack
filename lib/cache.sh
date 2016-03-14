@@ -1,4 +1,4 @@
-source $BP_DIR/lib/binaries.sh
+source $BUILDPACK_DIR/lib/binaries.sh
 
 create_signature() {
   echo "$(node --version); $(npm --version)"
