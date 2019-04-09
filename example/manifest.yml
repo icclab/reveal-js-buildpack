@@ -3,5 +3,8 @@ applications:
 - name: revealjs-example
   memory: 128M
   instances: 1
-  host: revealjs-${random-word}
-  buildpack: https://github.engineering.zhaw.ch/mach/reveal-js-buildpack.git
+  routes: 
+  - route: revealjs.scapp.io
+  random-route: true
+  buildpacks: 
+  - https://github.engineering.zhaw.ch/CCP2/reveal-js-buildpack.git

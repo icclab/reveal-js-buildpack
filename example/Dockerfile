@@ -1,8 +1,7 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 RUN apt-get -qqy update
 RUN apt-get -qqy install git nodejs npm
-RUN ln -s /usr/bin/nodejs /usr/bin/node
 WORKDIR /opt
 
 # Install reveal.js
