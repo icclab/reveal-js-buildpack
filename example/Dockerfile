@@ -1,15 +1,17 @@
 FROM ubuntu:18.04
 
 RUN apt-get -qqy update
-RUN apt-get -qqy install git nodejs npm
-WORKDIR /opt
+RUN apt-get -qqy install git curl
+
+# Install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
+RUN apt-get -qqy install nodejs
 
 # Install reveal.js
+WORKDIR /opt
 RUN git clone https://github.com/christofmarti/reveal.js.git presentation
 WORKDIR /opt/presentation
-RUN npm install -g grunt-cli
 RUN npm install
-RUN sed -i "s/port: port/port: port,\n\t\t\t\t\thostname: \'\'/g" Gruntfile.js
 
 # Add content
 ADD index.html /opt/presentation/index.html
@@ -18,4 +20,6 @@ ADD index.html /opt/presentation/index.html
 WORKDIR /opt/presentation
 
 EXPOSE 8000
-CMD [ "grunt", "serve" ]
+ENV GRUNT_PORT 8000
+ENV GRUNT_BROWSER false
+CMD [ "npm", "start" ]
