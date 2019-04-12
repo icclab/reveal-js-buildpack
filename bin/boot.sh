@@ -4,6 +4,4 @@ export NODE_ENV=${NODE_ENV:-production}
 export GRUNT_PORT=${PORT:-8080}	
 export GRUNT_BROWSER=false
 echo "Starting Server on port $GRUNT_PORT"
-#npm start
-#grunt serve --hostname='0.0.0.0' --port=$PORT 
 grunt serve 

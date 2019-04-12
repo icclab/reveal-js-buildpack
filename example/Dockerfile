@@ -17,9 +17,9 @@ RUN npm install
 ADD index.html /opt/presentation/index.html
 # you may need to add additional content like images
 # ADD images /opt/presentation/images
-WORKDIR /opt/presentation
 
 EXPOSE 8000
+ENV PATH "/opt/presentation/node_modules/.bin:${PATH}"
 ENV GRUNT_PORT 8000
 ENV GRUNT_BROWSER false
-CMD [ "npm", "start" ]
+CMD [ "grunt", "serve" ]
