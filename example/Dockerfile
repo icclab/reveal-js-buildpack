@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
-RUN apt-get -qqy update
-RUN apt-get -qqy install git curl
+RUN apt-get -qqy update 
+RUN apt-get -qqy install apt-utils git curl
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
